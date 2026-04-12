@@ -30,7 +30,7 @@ Path Plot
 ![Path Plot](results/path_plot.png)
 
 Trajectory Comparison
-![Trajectory Comparison](results/trajectory_comparison (1).png)
+![Trajectory Comparison](results/trajectory_comparison.png)
 
 **Observation:**
 - Min-time trajectory completes in **20.2 seconds** at speed 5 units/s.
