@@ -29,10 +29,27 @@ def smooth_trajectory(waypoints, speed):
     return list(zip(xs.tolist(), ys.tolist(), t_samples.tolist()))
 
 
+def compute_speed_acceleration(traj):
+    coords = np.array([(x, y) for x, y, t in traj])
+    times  = np.array([t for x, y, t in traj])
+
+    dx = np.diff(coords[:, 0])
+    dy = np.diff(coords[:, 1])
+    dt = np.diff(times)
+
+    speed = np.sqrt(dx**2 + dy**2) / dt
+    t_speed = (times[:-1] + times[1:]) / 2
+
+    acc = np.diff(speed) / dt[:-1]
+    t_acc = (t_speed[:-1] + t_speed[1:]) / 2
+
+    return t_speed, speed, t_acc, acc
+
+
 def generate_trajectories(waypoints=None):
     if waypoints is None:
         waypoints = plan_path()
-    traj_fast = smooth_trajectory(waypoints, speed=MIN_TIME_SPEED)
+    traj_fast   = smooth_trajectory(waypoints, speed=MIN_TIME_SPEED)
     traj_energy = smooth_trajectory(waypoints, speed=MIN_ENERGY_SPEED)
     print(f"Min-time   trajectory: {len(traj_fast)} points, total time ~ {traj_fast[-1][2]:.1f} s")
     print(f"Min-energy trajectory: {len(traj_energy)} points, total time ~ {traj_energy[-1][2]:.1f} s")
@@ -44,24 +61,29 @@ if __name__ == "__main__":
     waypoints = plan_path()
     traj_fast, traj_energy = generate_trajectories(waypoints)
 
-    xf, yf, tf = zip(*traj_fast)
-    xe, ye, te = zip(*traj_energy)
-    wx, wy = zip(*waypoints)
+    t_sf, spd_f, t_af, acc_f = compute_speed_acceleration(traj_fast)
+    t_se, spd_e, t_ae, acc_e = compute_speed_acceleration(traj_energy)
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
-    for ax, xs, ys, ts, label, color in [
-        (axes[0], xf, yf, tf, "Min-Time", "steelblue"),
-        (axes[1], xe, ye, te, "Min-Energy", "darkorange"),
-    ]:
-        ax.plot(wx, wy, "k--", linewidth=0.8, alpha=0.5, label="Raw waypoints")
-        sc = ax.scatter(xs, ys, c=ts, cmap="plasma", s=4, label=label)
-        plt.colorbar(sc, ax=ax, label="Time (s)")
-        ax.set_title(f"{label} Trajectory")
-        ax.set_xlabel("X")
-        ax.set_ylabel("Y")
-        ax.legend(fontsize=8)
-        ax.set_aspect("equal")
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
+    axes[0].plot(t_sf, spd_f,   color="steelblue",  linewidth=2, label="Min-Time")
+    axes[0].plot(t_se, spd_e,   color="darkorange",  linewidth=2, label="Min-Energy")
+    axes[0].set_title("Speed vs Time")
+    axes[0].set_xlabel("Time (s)")
+    axes[0].set_ylabel("Speed (units/s)")
+    axes[0].legend()
+    axes[0].grid(True, alpha=0.3)
+
+    axes[1].plot(t_af, acc_f,   color="steelblue",  linewidth=2, label="Min-Time")
+    axes[1].plot(t_ae, acc_e,   color="darkorange",  linewidth=2, label="Min-Energy")
+    axes[1].axhline(0, color="gray", linewidth=0.8, linestyle="--")
+    axes[1].set_title("Acceleration vs Time")
+    axes[1].set_xlabel("Time (s)")
+    axes[1].set_ylabel("Acceleration (units/s²)")
+    axes[1].legend()
+    axes[1].grid(True, alpha=0.3)
+
+    plt.suptitle("Trajectory Comparison", fontsize=14, fontweight="bold")
     plt.tight_layout()
     plt.savefig("results/trajectory_comparison.png", dpi=150)
     plt.show()
