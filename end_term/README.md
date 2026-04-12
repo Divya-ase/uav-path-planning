@@ -26,18 +26,29 @@
 * simulate.py — runs the full simulation and shows animation and results.
 
 **Results**
-
+Path Plot
 ![Path Plot](results/path_plot.png)
+
+Trajectory Comparison
 ![Trajectory Comparison](results/trajectory_comparison.png)
 
-* The minimum-time trajectory is faster compared to the minimum-energy trajectory.
-* The minimum-energy trajectory uses less energy but takes more time to reach the goal.
-* The difference is small, but there is a clear trade-off between speed and energy efficiency.
+**Observation:**
+- Min-time trajectory completes in **20.2 seconds** at speed 5 units/s.
+- Min-energy trajectory completes in **67.2 seconds** at speed 1.5 units/s.
+- Min-time is **69.9% faster** than min-energy.
+- Min-energy uses **69.9% less energy** than min-time.
+
+
 
 **Formation Details**
-
-* I used a V-shape formation for the UAVs.
-* The total number of UAVs is 5.
-* Each UAV is assigned a fixed position in the formation based on its index to maintain proper spacing.
+- Formation shape: **V-shape**
+- Number of UAVs: **N = 5**
+- Drone assignment: Each drone is offset from the centroid in local frame.
+  - Drone 1: far left back
+  - Drone 2: left back
+  - Drone 3: centre (lead)
+  - Drone 4: right back
+  - Drone 5: far right back
+- The centroid follows the A* path and all drones maintain V-shape formation throughout the flight.
 
 
