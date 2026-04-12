@@ -1,46 +1,48 @@
-# UAV path planning project
-**what did you build ?**
-* This project is about UAV path planning.
-* I used a V-shape formation for the UAVs.
-* There are a total of 5 UAVs in the system.
-* I used the A* algorithm for path planning.
+# UAV Path Planning & Formation Control
 
-**SETUP :**
-* First, clone the repository using `git clone https://github.com/Divya-ase/uav-path-planning.git`
-* Then go to the project folder using `cd uav-path-planning/end_term`
-* Finally, install the required libraries using `pip install -r requirements.txt`
+## Part 1 — What did you build?
+This project implements a UAV formation flight simulation on a 2D grid map. 
+A* algorithm is used for path planning to find a collision-free path from 
+start to goal. 5 UAVs fly in a V-shape formation with min-time and 
+min-energy trajectories.
 
-**How to run ?**
+## Part 2 — Setup
+git clone https://github.com/Divya-ase/uav-path-planning.git
+cd uav-path-planning/end_term
+pip install -r requirements.txt
 
-* Run the program using `python simulate.py`
-* When it runs, it opens a window showing the UAVs moving in formation along the planned path.
-* It also saves the output as a GIF file in the `results` folder.
-* Some basic information or metrics may also be printed in the terminal.
+## Part 3 — How to run
+python simulate.py
 
-**What each script does ?**
+When simulate.py runs:
+- It builds the 2D grid map with obstacle
+- Runs A* to find the path
+- Generates min-time and min-energy trajectories
+- Saves path_plot.png and trajectory_comparison.png in results/
+- Saves formation_animation.gif in results/
 
-* map_setup.py — defines the grid, obstacles, and start/goal positions.
-* path_planner.py — uses A* algorithm to find a path from start to goal.
-* trajectory.py — converts the path into smooth trajectories for UAVs.
-* formation.py — manages the V-shape formation and UAV positions.
-* simulate.py — runs the full simulation and shows animation and results.
+## Part 4 — What each script does
+- map_setup.py — defines the 2D grid, places the obstacle, sets start and goal coordinates
+- path_planner.py — implements A* to find a collision-free path
+- trajectory.py — converts the path into smooth min-time and min-energy trajectories
+- formation.py — defines the V-shape formation and assigns drones to positions
+- simulate.py — runs everything together and produces the animation and plots
 
-**Results**
-Path Plot
+## Part 5 — Results
+
+### Path Plot
 ![Path Plot](results/path_plot.png)
 
-Trajectory Comparison
+### Trajectory Comparison
 ![Trajectory Comparison](results/trajectory_comparison.png)
 
 **Observation:**
-- Min-time trajectory completes in **20.2 seconds** at speed 5 units/s.
-- Min-energy trajectory completes in **67.2 seconds** at speed 1.5 units/s.
-- Min-time is **69.9% faster** than min-energy.
-- Min-energy uses **69.9% less energy** than min-time.
+- Min-time trajectory completes in **20.2 seconds** at speed 5 units/s
+- Min-energy trajectory completes in **67.2 seconds** at speed 1.5 units/s
+- Min-time is **69.9% faster** than min-energy
+- Min-energy uses **69.9% less energy** than min-time
 
-
-
-**Formation Details**
+## Part 6 — Formation details
 - Formation shape: **V-shape**
 - Number of UAVs: **N = 5**
 - Drone assignment: Each drone is offset from the centroid in local frame.
@@ -52,3 +54,6 @@ Trajectory Comparison
 - The centroid follows the A* path and all drones maintain V-shape formation throughout the flight.
 
 
+
+
+  
