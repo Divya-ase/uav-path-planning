@@ -52,8 +52,3 @@ When simulate.py runs:
   - Drone 4: right back
   - Drone 5: far right back
 - The centroid follows the A* path and all drones maintain V-shape formation throughout the flight.
-
-
-
-
-  
