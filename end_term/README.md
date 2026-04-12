@@ -8,7 +8,9 @@ min-energy trajectories.
 
 ## Part 2 — Setup
 git clone https://github.com/Divya-ase/uav-path-planning.git
+
 cd uav-path-planning/end_term
+
 pip install -r requirements.txt
 
 ## Part 3 — How to run
